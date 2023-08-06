@@ -16,6 +16,7 @@ alias cobra=cobra-cli
 # or mv $(go env GOBIN)/cobra-cli $(go env GOBIN)/cobra
 
 cobra init 
+# or even better cobra init --viper
 
 cobra add net
 
