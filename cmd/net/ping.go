@@ -1,6 +1,3 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-*/
 package net
 
 import (
@@ -11,53 +8,55 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	urlPath string
-	// Logic
-	client = http.Client{
-		Timeout: time.Second * 2,
-	}
-)
+var hostUrl string
+var client http.Client
 
-func ping(domain string) (int, error) {
-	url := "http://" + domain
-	req, err := http.NewRequest("HEAD", url, nil)
+func ping(hostURL string) (statusCode int, err error) {
+	url := "https://" + hostURL + "/ping"
+
+	resp, err := client.Head(url)
 	if err != nil {
-		return 0, err
+		return
 	}
-	resp, err := client.Do(req)
-	if err != nil {
-		return 0, err
-	}
-	resp.Body.Close()
-	return resp.StatusCode, nil
+
+	return resp.StatusCode, err
 }
 
 // pingCmd represents the ping command
 var pingCmd = &cobra.Command{
 	Use:   "ping",
-	Short: "This pings a remote URL and returns the response",
+	Short: "Pings a host",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("ping called")
 
-		if resp, err := ping(urlPath); err != nil {
+		client = http.Client{
+			Timeout: time.Second * 2,
+		}
+
+		statusCode, err := ping(hostUrl)
+
+		if err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Println(resp)
+			fmt.Printf("Status Code: %d\n", statusCode)
 		}
+
 	},
 }
 
 func init() {
 
-	pingCmd.Flags().StringVarP(&urlPath, "url", "u", "", "The url to ping")
+	pingCmd.Flags().StringVarP(&hostUrl, "hostUrl", "u", "", "Host to ping")
 
-	if err := pingCmd.MarkFlagRequired("url"); err != nil {
+	if err := pingCmd.MarkFlagRequired("hostUrl"); err != nil {
 		fmt.Println(err)
 	}
 
-	// Here you will define your flags and configuration settings.
 	NetCmd.AddCommand(pingCmd)
+
+	// Here you will define your flags and configuration settings.
+
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// pingCmd.PersistentFlags().String("foo", "", "A help for foo")

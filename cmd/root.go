@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
 package cmd
 
@@ -7,10 +7,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/AlexsJones/toolbox/cmd/info"
-	"github.com/AlexsJones/toolbox/cmd/net"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"github.com/golangFame/toolbox/cmd/info"
+	"github.com/golangFame/toolbox/cmd/net"
 )
 
 var cfgFile string
@@ -48,7 +49,13 @@ func init() {
 
 	setDefaults()
 
-	fmt.Println("name:", viper.Get("name"))
+	var name string = viper.GetString("name")
+
+	if name == "" {
+		name = "toolbox"
+	}
+
+	fmt.Println("name:", name)
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
