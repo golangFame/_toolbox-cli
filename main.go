@@ -1,9 +1,9 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
 package main
 
-import "github.com/AlexsJones/toolbox/cmd"
+import "github.com/golangFame/toolbox/cmd"
 
 func main() {
 	cmd.Execute()
