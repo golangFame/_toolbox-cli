@@ -13,6 +13,7 @@ var NetCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("net called")
+		cmd.Help()
 	},
 }
 
