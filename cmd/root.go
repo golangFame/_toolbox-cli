@@ -8,6 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/golangFame/toolbox/cmd/info"
 	"github.com/golangFame/toolbox/cmd/net"
 )
 
@@ -38,6 +39,7 @@ func Execute() {
 func init() {
 
 	rootCmd.AddCommand(net.NetCmd)
+	rootCmd.AddCommand(info.InfoCmd)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
