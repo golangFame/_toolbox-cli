@@ -14,10 +14,14 @@ import (
 var hostUrl string
 var client http.Client
 
-func ping(hostURL string) (int, error) {
+func ping(hostURL string) (statusCode int, err error) {
 	url := "https://" + hostURL + "/ping"
 
-	resp, err := client.Get(url)
+	resp, err := client.Head(url)
+	if err != nil {
+		return
+	}
+
 	return resp.StatusCode, err
 }
 
@@ -48,7 +52,7 @@ func init() {
 
 	pingCmd.Flags().StringVarP(&hostUrl, "hostUrl", "u", "", "Host to ping")
 
-	if err := pingCmd.MarkFlagRequired("host"); err != nil {
+	if err := pingCmd.MarkFlagRequired("hostUrl"); err != nil {
 		fmt.Println(err)
 	}
 
