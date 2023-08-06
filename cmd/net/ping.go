@@ -5,26 +5,53 @@ package net
 
 import (
 	"fmt"
+	"net/http"
+	"time"
 
 	"github.com/spf13/cobra"
 )
 
+var hostUrl string
+var client http.Client
+
+func ping(hostURL string) (int, error) {
+	url := "https://" + hostURL + "/ping"
+
+	resp, err := client.Get(url)
+	return resp.StatusCode, err
+}
+
 // pingCmd represents the ping command
 var pingCmd = &cobra.Command{
 	Use:   "ping",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Pings a host",
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("ping called")
+
+		client = http.Client{
+			Timeout: time.Second * 2,
+		}
+
+		statusCode, err := ping(hostUrl)
+
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Printf("Status Code: %d\n", statusCode)
+		}
+
 	},
 }
 
 func init() {
+
+	pingCmd.Flags().StringVarP(&hostUrl, "hostUrl", "u", "", "Host to ping")
+
+	if err := pingCmd.MarkFlagRequired("host"); err != nil {
+		fmt.Println(err)
+	}
+
 	NetCmd.AddCommand(pingCmd)
 
 	// Here you will define your flags and configuration settings.
