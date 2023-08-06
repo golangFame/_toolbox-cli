@@ -2,3 +2,4 @@ dist/
 toolbox
 .idea/
 .vscode/
+.DS_Store
